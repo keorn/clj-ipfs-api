@@ -51,21 +51,22 @@
           cmds))
 
 
+(defn intern-cmds [cmd-vecs]
+  (doseq [cmd-vec cmd-vecs]
+    (intern *ns*
+            (symbol (join "-" cmd-vec))
+            (empty-fn cmd-vec))))
+
+
 (defn setup!
   "Request and intern all of the commands."
   []
   (if-let [cmd-raw  ((empty-fn ["commands"]))]
     (let [cmd-vecs (unpack-cmds [] (:Subcommands cmd-raw))]
-      (doseq [cmd-vec cmd-vecs]
-        (intern *ns*
-                (symbol (join "-" cmd-vec))
-                (empty-fn cmd-vec))))
+      (intern-cmds cmd-vecs))
     ;; In the case that we can't use the server to get commands...
     (do (println "Could not set up using the" @api-url "address, please pick one with `set-api-url!`.")
-        (doseq [cmd-vec c/cmd-vecs]
-          (intern *ns*
-                  (symbol (join "-" cmd-vec))
-                  (empty-fn cmd-vec))))))
+        (intern-cmds c/cmd-vecs))))
 
 
 (setup!) ; Try to setup using the default address.

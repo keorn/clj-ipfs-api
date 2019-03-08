@@ -1,6 +1,6 @@
 (ns clj-ipfs-api.commands)
 
-(def coms
+(def cmds
  ["add"
   "bitswap"
   "bitswap ledger"
@@ -155,4 +155,4 @@
 
 
 (def cmd-vecs
-  (map #(clojure.string/split % #" ") coms))
+  (map #(clojure.string/split % #" ") cmds))
